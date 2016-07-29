@@ -139,7 +139,50 @@ function maybeCall(token, expr) {
 
 function parseAtom(token) {
 	return maybeCall(function () {
-		
+		if (isPunc('(')) {
+			token.next()
+			let expr = parseExpression(token)
+			skipPunc(')')
+			return expr
+		}
+		if (isPunc('(')) return parseProg(token)
+		if (isKw('if')) return parseIf(token)
+		if (isKw('true') || isKw('false')) return parseBool(token)
+		if (isKw('lambda')) {
+			token.next()
+			return parseLambda(token)
+		}
+		let tok = token.next()
+		if (tok.type === 'var' || tok.type == 'num' || tok.type === 'str') return tok
+		unexpected(token)
+	})
+}
+
+function parseTopLevel(token) {
+	let prog = []
+	while (!token.eof()) {
+		prog.push(parseExpression(token))
+		if (!token.eof()) skipPunc(';')
+	}
+	return {
+		type: 'prog',
+		prog: prog
+	}
+}
+
+function parseProg(token) {
+	let prog = delimited('{', '}', ';', parseExpression)
+	if (prog.length === 0) return false
+	if (prog.length === 1) return prog[0]
+	return {
+		type: 'prog',
+		prog: prog
+	}
+}
+
+function parseExpression() {
+	return maybeCall(function () {
+		return maybeBinary(parseAtom(), 0)
 	})
 }
 
