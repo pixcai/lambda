@@ -1,0 +1,23 @@
+{
+  "name": "lambda",
+  "version": "1.0.0",
+  "description": "lambda language",
+  "main": "index.js",
+  "scripts": {
+    "test": "node --use_strict index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pixcai/lambda.git"
+  },
+  "keywords": [
+    "parser",
+    "interpreter"
+  ],
+  "author": "pixcai",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/pixcai/lambda/issues"
+  },
+  "homepage": "https://github.com/pixcai/lambda#readme"
+}
